@@ -1,2 +1,2 @@
 # Master
-General repository with collection of resources
+General repository with collection of resources.
