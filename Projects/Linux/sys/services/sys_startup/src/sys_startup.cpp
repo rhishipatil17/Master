@@ -1,11 +1,14 @@
 #include <iostream>
+#include <unistd.h>
 
-#include "abstracted_api.hpp"
+#include "abstracted_api.h"
 
 using namespace std;
+using namespace abstracted_api;
 
-int main(int argc, char *argv)
+int main(int argc, char **argv)
 {
-	int ret = 0;
-	abstracted_api::set_working_dir(get_home_dir().c_str());
+	printf("Hello from startup app PID [%d]\n", getpid());
+	// set_working_dir(getSysShareRoot().c_str());
+	
 }
