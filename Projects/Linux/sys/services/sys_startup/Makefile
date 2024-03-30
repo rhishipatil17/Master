@@ -30,4 +30,4 @@ clean:
 
 -include $(DEPFILES)
 
-.PHONY: all clean distribute diff
+.PHONY: all clean
