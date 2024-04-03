@@ -1,18 +1,32 @@
 #include "binary_tree.h"
 
-namespace r_DataStructure
+namespace DataStructure
 {
-	r_BinaryTree::r_BinaryTree()
+	BinaryTree::BinaryTree()
 	{
 		data = 0;
 		left = 0;
 		right = 0;
 	}
-	r_BinaryTree::r_BinaryTree(int received_data, r_BinaryTree *received_left, r_BinaryTree *received_right)
+	BinaryTree::BinaryTree(int received_data, BinaryTree *received_left, BinaryTree *received_right)
 	{
 		data = received_data;
 		left = received_left;
 		right = received_right;
 	}
 
+	int BinaryTree::getData()
+	{
+		return data;
+	}
+
+	BinaryTree* BinaryTree::getLeft()
+	{
+		return left;
+	}
+
+	BinaryTree* BinaryTree::getRight()
+	{
+		return right;
+	}
 }

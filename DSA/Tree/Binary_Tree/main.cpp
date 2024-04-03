@@ -6,6 +6,6 @@ using namespace std;
 
 int main()
 {
-    r_DataStructure::r_BinaryTree BT;
+    DataStructure::BinaryTree BT;
     return 0;
 }

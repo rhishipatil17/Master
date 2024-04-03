@@ -1,18 +1,25 @@
 #ifndef BINARYTREE_H
 #define BINARYTREE_H
 
-namespace r_DataStructure
+namespace DataStructure
 {
-	class r_BinaryTree
+	class BinaryTree
 	{
 		public:
-			r_BinaryTree();
-			r_BinaryTree(int received_data, r_BinaryTree *received_left, r_BinaryTree *received_right);
+			BinaryTree();
+			BinaryTree(int received_data, BinaryTree *received_left, BinaryTree *received_right);
+
+			//tree specific
+
+			//node specific
+			int getData();
+			BinaryTree* getLeft();
+			BinaryTree* getRight();
 
 		private:
 			int data;
-			r_BinaryTree *left;
-			r_BinaryTree *right;
+			BinaryTree *left;
+			BinaryTree *right;
 	};
 }
 
