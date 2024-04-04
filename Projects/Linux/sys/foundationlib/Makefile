@@ -32,4 +32,4 @@ clean:
 
 -include $(DEPFILES)
 
-.PHONY: clean
+.PHONY: clean all
