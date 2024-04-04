@@ -1,7 +1,7 @@
-TARGET= foundationlib.o
 SRCDIR= ./src
 INCDIRS= -I./include
 BUILDDIR= ./build/
+TARGET= $(BUILDDIR)/foundationlib.o
 
 CC= g++
 LINK= ld
@@ -11,21 +11,18 @@ CCFLAGS= -Wall -Wextra -g -fPIC $(INCDIRS) $(OPT) $(DEPFLAGS)
 LFLAGS= -r
 
 CPPFILES= $(foreach D,$(SRCDIR),$(wildcard $(D)/*.cpp))
-OBJECTS= $(patsubst %.cpp,%.o,$(CPPFILES))
-DEPFILES= $(patsubst %.cpp,%.d,$(CPPFILES))
+OBJECTS= $(patsubst %.cpp,$(BUILDDIR)%.o,$(CPPFILES))
+DEPFILES= $(patsubst %.cpp,$(BUILDDIR)%.d,$(CPPFILES))
 BUILDSUBDIR= $(foreach D,$(SRCDIR),$(BUILDDIR)$(D))
 
 all : $(TARGET)
-	mkdir -p $(BUILDSUBDIR)
-	mv $(OBJECTS) $(BUILDDIR)$(OBJECTS)
-	mv $(DEPFILES) $(BUILDDIR)$(DEPFILES)
-	mv $(TARGET) $(BUILDDIR)
 
 $(TARGET) : $(OBJECTS)
 	$(LINK) $(LFLAGS) $(OBJECTS) -o $(TARGET)
 
-%.o : %.cpp
-	$(CC) $(CCFLAGS) -c -o $@ $<
+$(BUILDDIR)%.o : %.cpp
+	mkdir -p $(BUILDSUBDIR)
+	$(CC) $(CCFLAGS) -c $< -o $@
 
 clean: 
 	rm -rf $(BUILDDIR)
