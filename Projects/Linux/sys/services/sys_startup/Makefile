@@ -1,10 +1,11 @@
 FOUNDATIONLIB = ../../foundationlib
 SRCDIR= ./src
-INCDIRS= ./include $(FOUNDATIONLIB)/include
+INCDIR= ./include
 BUILDDIR= ./build
 CODEDIRS= $(SRCDIR)
 
 DEPDIR= $(FOUNDATIONLIB)
+DEPINCDIR= $(FOUNDATIONLIB)/include
 DEPOBJDIR= $(foreach D,$(DEPDIR),$(D)/build)
 DEPOBJECTS= $(foreach D,$(DEPOBJDIR),$(D)/*.o)
 
@@ -15,7 +16,7 @@ CC= g++
 LINK= ld
 DEPFLAGS=-MP -MD
 OPT= -O0
-CCFLAGS=-Wall -Wextra -g -fPIC  $(OPT) $(DEPFLAGS) $(foreach D,$(INCDIRS),-I$(D))
+CCFLAGS=-Wall -Wextra -g -fPIC  $(OPT) $(DEPFLAGS) $(foreach D,$(INCDIR),-I$(D)) $(foreach D,$(DEPINCDIR),-I$(D))
 LFLAGS= -r
 
 BUILDSUBDIR= $(foreach D,$(CODEDIRS),$(BUILDDIR)/$(D))
