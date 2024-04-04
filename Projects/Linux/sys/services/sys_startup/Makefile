@@ -1,33 +1,60 @@
-CC= g++
-OPT= -O0
-
 FOUNDATIONLIB = ../../foundationlib
 SRCDIR= ./src
 INCDIRS= ./include $(FOUNDATIONLIB)/include
 BUILDDIR= ./build
+CODEDIRS= $(SRCDIR)
 
-TARGET= startup
-CODEDIRS= $(SRCDIR) $(FOUNDATIONLIB)/src
+DEPDIR= $(FOUNDATIONLIB)
+DEPOBJDIR= $(foreach D,$(DEPDIR),$(D)/build)
+DEPOBJECTS= $(foreach D,$(DEPOBJDIR),$(D)/*.o)
 
+TARGET= $(BUILDDIR)/startup.o
+FINALTARGET= $(BUILDDIR)/startup.out
+
+CC= g++
+LINK= ld
 DEPFLAGS=-MP -MD
-CCFLAGS=-Wall -Wextra -g $(foreach D,$(INCDIRS),-I$(D)) $(OPT) $(DEPFLAGS)
+OPT= -O0
+CCFLAGS=-Wall -Wextra -g -fPIC  $(OPT) $(DEPFLAGS) $(foreach D,$(INCDIRS),-I$(D))
+LFLAGS= -r
 
+BUILDSUBDIR= $(foreach D,$(CODEDIRS),$(BUILDDIR)/$(D))
 CPPFILES=$(foreach D,$(CODEDIRS),$(wildcard $(D)/*.cpp))
-OBJECTS=$(patsubst %.cpp,%.o,$(CPPFILES))
-DEPFILES=$(patsubst %.cpp,%.d,$(CPPFILES))
+OBJECTS=$(patsubst %.cpp,$(BUILDDIR)/%.o,$(CPPFILES))
+DEPFILES=$(patsubst %.cpp,$(BUILDDIR)/%.d,$(CPPFILES))
 
-all: $(TARGET)
-#	@echo $(OBJECTS)
+all: $(TARGET) $(FINALTARGET)
 
-$(TARGET): $(OBJECTS)
-	$(CC) -o $@ $^
+$(FINALTARGET): 
+	for dir in $(DEPDIR); do \
+        make -C $$dir all; \
+    done
 
-%.o : %.cpp
-	$(CC) $(CCFLAGS) -c -o $@ $<
+	mkdir $(BUILDDIR)/tmp
+	cp $(DEPOBJECTS) $(BUILDDIR)/tmp
+
+	$(CC) $(BUILDDIR)/*.o $(BUILDDIR)/tmp/*.o -o $(FINALTARGET)
+
+	rm -rf $(BUILDDIR)/tmp
+
+$(TARGET) : $(OBJECTS)
+	$(LINK) $(LFLAGS) $(OBJECTS) -o $(TARGET)
+
+$(BUILDDIR)/%.o : %.cpp | $(BUILDSUBDIR)
+	$(CC) $(CCFLAGS) -c $< -o $@
+
+$(BUILDSUBDIR):
+	mkdir -p $(BUILDSUBDIR)
 
 clean:
-	rm -rf $(TARGET) $(OBJECTS) $(DEPFILES)
+	rm -rf $(BUILDDIR)/
+
+cleanall:
+	for dir in $(DEPDIR); do \
+        make -C $$dir clean; \
+    done
+	rm -rf $(BUILDDIR)
 
 -include $(DEPFILES)
 
-.PHONY: all clean
+.PHONY: all clean cleanall

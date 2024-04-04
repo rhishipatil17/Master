@@ -10,7 +10,7 @@ using namespace service_launcher;
 
 int main(int argc, char **argv)
 {
-	printf("Hello from startup app PID [%d]\n", getpid());
+	cout << "Hello from startup app PID [%d]\n"<< getpid() << endl;
 	// set_working_dir(getSysShareRoot().c_str());
-	ServiceLauncher launcher;
+	return 0;
 }
