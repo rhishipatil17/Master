@@ -34,9 +34,10 @@ $(FINALTARGET):
 	mkdir $(BUILDDIR)/tmp
 	cp $(DEPOBJECTS) $(BUILDDIR)/tmp
 
-	$(CC) $(BUILDDIR)/*.o $(BUILDDIR)/tmp/*.o -o $(FINALTARGET)
+	-$(CC) $(BUILDDIR)/*.o $(BUILDDIR)/tmp/*.o -o $(FINALTARGET)
 
 	rm -rf $(BUILDDIR)/tmp
+	@echo "removed"
 
 $(TARGET) : $(OBJECTS)
 	$(LINK) $(LFLAGS) $(OBJECTS) -o $(TARGET)

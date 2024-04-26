@@ -1,11 +1,7 @@
 #include "StartupConfig.h"
+#include <fstream>
 
 using namespace startup_config;
-
-StartupConfig::StartupConfig()
-{
-
-}
 
 StartupConfig& StartupConfig::getInstance(void)
 {

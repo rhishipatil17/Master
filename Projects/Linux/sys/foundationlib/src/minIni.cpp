@@ -1,6 +1,6 @@
 #include "minIni.h"
 
-/*------------------public------------------*/
+using namespace ConfigReader;
 
 minIni* minIni::operator=(std::string &filename)
 {
@@ -26,7 +26,7 @@ bool minIni::isPresent(void)
     return result;
 }
 
-bool minIni::getS(const std::string &key, std::string &value)
+bool minIni::getKeyValue(const std::string &key, std::string &value)
 {
     bool result = 0;
     std::ifstream file(m_file);
