@@ -22,21 +22,27 @@ void service_launcher::launch_services()
     for(std::vector<std::string>::iterator it = files.begin(); it != files.end(); it++)
     {
         ConfigReader::minIni s_file(*it);
+        //TODO_work: default values of members
         struct service s_service;
-        bool valid = 1;
+        bool valid = 0;
 
-        if(!s_file.getKeyValue(service_name, s_service.name))
-            valid = 0;
-        if(!s_file.getKeyValue(service_enabled, s_service.enabled))
-            valid = 0;
-        if(!s_file.getKeyValue(service_directory, s_service.directory))
-            valid = 0;
-        if(!s_file.getKeyValue(service_exec, s_service.exec))
-            valid = 0;
+        while(1)
+        {
+            if(!s_file.getKeyValue(service_name, s_service.name))
+                break;
+            if(!s_file.getKeyValue(service_enabled, s_service.enabled))
+                break;
+            if(!s_file.getKeyValue(service_directory, s_service.directory))
+                break;
+            if(!s_file.getKeyValue(service_exec, s_service.exec))
+                break;
 
+            valid = 1;
+            break;
+        }
         if(valid)
         {
-            s_service.running = false;
+            //TODO_msg: print if valid or error
             service_list.push_back(s_service);
         }
     }
@@ -51,6 +57,8 @@ int service_launcher::exec_service(struct service &s_service)
 {
     if(!s_service.enabled.compare(enabled_true))
     {
-        
+        //TODO_msg: print if enabled
+
+
     }
 }

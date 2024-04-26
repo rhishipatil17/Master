@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 {
 	cout << "Hello from startup app PID [%d]\n"<< getpid() << endl;
 	s_config();
-	// service_launcher launcher;
+	service_launcher launcher;
 	// launcher.launch_services();
 	return 0;
 }
