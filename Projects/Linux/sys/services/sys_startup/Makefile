@@ -16,7 +16,7 @@ CC= g++
 LINK= ld
 DEPFLAGS=-MP -MD
 OPT= -O0
-CCFLAGS=-Wall -Wextra -g -fPIC  $(OPT) $(DEPFLAGS) $(foreach D,$(INCDIR),-I$(D)) $(foreach D,$(DEPINCDIR),-I$(D))
+CCFLAGS=-Wall -Wextra -std=c++11 -pthread -g -fPIC  $(OPT) $(DEPFLAGS) $(foreach D,$(INCDIR),-I$(D)) $(foreach D,$(DEPINCDIR),-I$(D))
 LFLAGS= -r
 
 BUILDSUBDIR= $(foreach D,$(CODEDIRS),$(BUILDDIR)/$(D))

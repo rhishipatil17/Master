@@ -5,6 +5,11 @@
 using namespace sys_startup;
 using namespace abstracted_api;
 
+service_launcher::service_launcher()
+{
+    read_launch_config();
+}
+
 void service_launcher::launch_services()
 {
     set_working_dir(getSysShareRoot());
@@ -51,6 +56,11 @@ void service_launcher::launch_services()
     {
         int ret = exec_service(*it);
     }
+}
+
+bool service_launcher::read_launch_config()
+{
+
 }
 
 int service_launcher::exec_service(struct service &s_service)

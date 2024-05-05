@@ -33,7 +33,9 @@ namespace sys_startup
 
         private:
             std::vector<service> service_list;
+            std::vector<std::string> 
 
+            bool read_launch_config();
             int exec_service(struct service &s_service);
     };
 }
