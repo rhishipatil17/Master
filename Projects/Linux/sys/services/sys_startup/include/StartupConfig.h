@@ -13,7 +13,9 @@ namespace startup_config
             static StartupConfig& getInstance(void);
 
         private:
-            StartupConfig() {}
+            StartupConfig();
+
+            bool runServices;
     };
 }
 

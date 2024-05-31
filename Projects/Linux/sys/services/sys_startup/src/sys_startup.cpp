@@ -7,14 +7,16 @@
 
 using namespace std;
 using namespace sys_startup;
+using namespace startup_config;
 using namespace abstracted_api;
 
 int main(int argc, char **argv)
 {
 	cout << "Hello from startup app PID [%d]\n"<< getpid() << endl;
-	s_config();
+	startup_config::StartupConfig &StartupConfig = s_config();
+
 	service_launcher launcher;
-	// launcher.launch_services();
+	launcher.launch_services();
 	return 0;
 }
 

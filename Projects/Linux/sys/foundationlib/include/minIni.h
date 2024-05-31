@@ -1,9 +1,11 @@
 #ifndef MININI
 #define MININI
 
-#include<string>
-#include<stack>
-#include<fstream>
+#include <string>
+#include <fstream>
+#include <vector>
+
+#define COMMA ','
 
 namespace
 {
@@ -26,7 +28,9 @@ namespace ConfigReader
             minIni* operator=(const char *filename);
 
             bool isPresent(void);
-            bool getKeyValue(const std::string &key, std::string &value);
+            bool getKeyValue(const std::string key, std::string &value);
+
+            static void getCSValues(const std::string data, std::vector<std::string> &values);
 
         private:
             std::string m_file;

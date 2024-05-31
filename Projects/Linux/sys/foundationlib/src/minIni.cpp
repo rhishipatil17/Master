@@ -26,7 +26,7 @@ bool minIni::isPresent(void)
     return result;
 }
 
-bool minIni::getKeyValue(const std::string &key, std::string &value)
+bool minIni::getKeyValue(const std::string key, std::string &value)
 {
     bool result = 0;
     std::ifstream file(m_file);
@@ -64,4 +64,21 @@ bool minIni::getKeyValue(const std::string &key, std::string &value)
     }
     file.close();
     return result;
+}
+
+void minIni::getCSValues(const std::string data, std::vector<std::string> &values)
+{
+    for(std::string::iterator it=data.begin(); it!=data.end(); it++)
+    {
+        std::string temp_str;
+        if(*it != COMMA)
+        {
+            temp_str.push_back(*it);
+        }
+        else
+        {
+            if(!temp_str.empty())
+                values.push_back(temp_str);
+        }
+    }
 }

@@ -4,14 +4,19 @@
 #include <string>
 #include <vector>
 
-#define service_run             ".run"
-#define service_name            "name"
-#define service_enabled         "enabled"
-#define service_directory       "directory"
-#define service_exec            "exec"
+#define SERVICE_LIST            "service_list.ini"
+#define SERVICE_RUN             ".run"
 
-#define enabled_true            "true"
-#define enabled_false           "false"
+#define SERVICE_LABEL           "[service]"
+
+#define SERVICE_NAME            "name"
+#define SERVICE_ENABLED         "enabled"
+#define SERVICE_DIRECTORY       "directory"
+#define SERVICE_EXEC            "exec"
+#define SERVICE_ARGS            "args"
+
+#define ENABLED_TRUE            "true"
+#define ENABLED_FALSE           "false"
 
 namespace sys_startup
 {
@@ -21,6 +26,7 @@ namespace sys_startup
         std::string enabled;
         std::string directory;
         std::string exec;
+        std::vector<std::string> args;
         bool running;
     };
 
@@ -33,10 +39,9 @@ namespace sys_startup
 
         private:
             std::vector<service> service_list;
-            std::vector<std::string> 
 
-            bool read_launch_config();
-            int exec_service(struct service &s_service);
+            void read_LaunchConfig();
+            long int exec_service(struct service &s_service);
     };
 }
 
