@@ -30,7 +30,7 @@ bool minIni::getKeyValue(const std::string key, std::string &value)
 {
     bool result = 0;
     std::ifstream file(m_file);
-    while(1)
+    do
     {
         if(!file)
         {
@@ -60,8 +60,8 @@ bool minIni::getKeyValue(const std::string key, std::string &value)
                 break;
             }
         }
-        break;
     }
+    while(0);
     file.close();
     return result;
 }

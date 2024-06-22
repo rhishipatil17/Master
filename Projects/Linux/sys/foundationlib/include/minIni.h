@@ -21,8 +21,7 @@ namespace ConfigReader
             {}
             minIni(const char *filename) : m_file(filename)
             {}
-            ~minIni()
-            { m_file.clear(); }
+            ~minIni() { m_file.clear(); }
 
             minIni* operator=(std::string &filename);
             minIni* operator=(const char *filename);

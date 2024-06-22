@@ -10,83 +10,121 @@ using namespace sys_startup;
 using namespace abstracted_api;
 
 service_launcher::service_launcher()
-{}
+{
+    read_SecurityServiceConfig();
+    read_LaunchConfig();
+}
+
+void service_launcher::read_SecurityServiceConfig()
+{
+    std::ifstream file(SERVICE_SECURITY);
+    if(!file)
+    {
+        return;
+    }
+    file.close();
+    extract_LaunchConfig(SERVICE_SECURITY, service_security);
+    
+}
 
 void service_launcher::read_LaunchConfig()
 {
     std::ifstream file(SERVICE_LIST);
-
     if(!file)
     {
         return;
     }
 
+    std::string tFileName = "temp";
+    std::ofstream tFile(tFileName.c_str());
     std::string line;
-    std::vector<service>::iterator it;
+    bool service_found = false;
+
     while(std::getline(file, line))
     {
-        if(!line.compare(SERVICE_LABEL))
+        if(line.compare(SERVICE_LABEL))
         {
-            std::string tFile = "temp";
-            struct service tService;
-
-            std::ofstream tempFile(tFile.c_str());
-            while(line.compare(SERVICE_LABEL))
+           if(service_found)
+           {
+                tFile << line;
+           }
+        }
+        else
+        {
+            if(service_found)
             {
-                tempFile << line;
+                struct service tService;
+                clear_Service(tService);
+                if(!extract_LaunchConfig(tFileName, tService))
+                {
+                    service_list.push_back(tService);
+                }
             }
-            tempFile.close();
-
-            //Todo_work: solve warning
-            file.seekg(file.tellg() - line.length());
-
-            ConfigReader::minIni minFile(tFile);
-            std::string value;
-            bool found_all = false;
-
-            while(1)
-            {
-                if(!minFile.getKeyValue(SERVICE_NAME, value))
-                    break;
-                tService.name = value;
-
-                if(!minFile.getKeyValue(SERVICE_ENABLED, value))
-                    break;
-                tService.enabled = value;
-
-                if(!minFile.getKeyValue(SERVICE_DIRECTORY, value))
-                    break;
-                tService.directory = value;
-
-                if(!minFile.getKeyValue(SERVICE_EXEC, value))
-                    break;
-                tService.exec = value;
-
-                minFile.getKeyValue(SERVICE_ARGS, value);
-                ConfigReader::minIni::getCSValues(value, tService.args);
-
-                found_all = true;
-                break;
-            }
-
-            remove(tFile.c_str());
-
-            if(found_all)
-            {
-                service_list.push_back(tService);
-            }
+            std::ofstream clearFile(tFileName.c_str(), std::ios::trunc);
+            clearFile.close();
         }
     }
-    file.close();
+    if(service_found)                                   //last service in the file will not have subsequent SERVICE_LABEL
+    {
+        struct service tService;
+        clear_Service(tService);
+        if(!extract_LaunchConfig(tFileName, tService))
+        {
+            service_list.push_back(tService);
+        }
+    }
+    tFile.close();
+    return;
+}
+
+int service_launcher::extract_LaunchConfig(std::string FileName, struct service &service)
+{
+    ConfigReader::minIni minFile(FileName);
+    std::string value;
+
+    if(!minFile.getKeyValue(SERVICE_NAME, value))
+        return -1;
+    service.name = value;
+
+    if(!minFile.getKeyValue(SERVICE_ENABLED, value))
+        return -1;
+    service.enabled = value;
+
+    if(!minFile.getKeyValue(SERVICE_DIRECTORY, value))
+        return -1;
+    service.directory = value;
+
+    if(!minFile.getKeyValue(SERVICE_EXEC, value))
+        return -1;
+    service.exec = value;
+
+    if(minFile.getKeyValue(SERVICE_ARGS, value))
+    {
+        ConfigReader::minIni::getCSValues(value, service.args);
+        service.args.push_back(NULL);
+    }
+    return 0;
+}
+
+void service_launcher::clear_Service(struct service &service)
+{
+    service.name.clear();
+    service.enabled.clear();
+    service.directory.clear();
+    service.exec.clear();
+    service.args.clear();
+    service.running=false;
 }
 
 void service_launcher::launch_services()
 {
-    read_LaunchConfig();
-
     for(std::vector<service>::iterator it = service_list.begin(); it != service_list.end(); it++)
     {
         int ret = exec_service(*it);
+        if(ret == -1)
+        {
+            it->enabled = false;
+        }
     }
 }
 

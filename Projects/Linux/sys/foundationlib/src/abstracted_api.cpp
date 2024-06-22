@@ -33,7 +33,7 @@ namespace abstracted_api
 		DIR *directory;
 		struct dirent *entry;
 
-		while(1)
+		do
 		{
 			directory = opendir(path.c_str());
 			if(directory != nullptr)
@@ -59,8 +59,8 @@ namespace abstracted_api
 				ret = 1;
 			}
 
-			break;
 		}
+		while(0);
 		return ret;
 	}
 
@@ -70,7 +70,7 @@ namespace abstracted_api
 		DIR *directory;
 		struct dirent *entry;
 
-		while(1)
+		do
 		{
 			directory = opendir(path.c_str());
 			if(directory != nullptr)
@@ -95,9 +95,8 @@ namespace abstracted_api
 				}
 				ret = 1;
 			}
-
-			break;
 		}
+		while(0);
 		return ret;
 	}
 }

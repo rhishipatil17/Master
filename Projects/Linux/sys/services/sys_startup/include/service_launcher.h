@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#define SERVICE_SECURITY        "service_security.ini"
 #define SERVICE_LIST            "service_list.ini"
 #define SERVICE_RUN             ".run"
 
@@ -20,15 +21,20 @@
 
 namespace sys_startup
 {
-    struct service
+    namespace
     {
-        std::string name;
-        std::string enabled;
-        std::string directory;
-        std::string exec;
-        std::vector<std::string> args;
-        bool running;
-    };
+        struct service
+        {
+            std::string name;
+            std::string enabled;
+            std::string directory;
+            std::string exec;
+            std::vector<std::string> args;
+            bool running;
+        };
+    }
+
+    
 
     class service_launcher
     {
@@ -39,8 +45,12 @@ namespace sys_startup
 
         private:
             std::vector<service> service_list;
+            struct service service_security;
 
+            void read_SecurityServiceConfig();
             void read_LaunchConfig();
+            int extract_LaunchConfig(std::string FileName, struct service &service);
+            void service_launcher::clear_Service(struct service &service);
             long int exec_service(struct service &s_service);
     };
 }
