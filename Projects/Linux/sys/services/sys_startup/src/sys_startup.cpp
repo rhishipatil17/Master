@@ -10,17 +10,16 @@ using namespace sys_startup;
 using namespace startup_config;
 using namespace abstracted_api;
 
+startup_config::StartupConfig &StartupConfig = startup_config::StartupConfig::getInstance();
+
 int main(int argc, char **argv)
 {
 	cout << "Hello from startup app PID [%d]\n"<< getpid() << endl;
-	startup_config::StartupConfig &StartupConfig = s_config();
 
-	service_launcher launcher;
-	launcher.launch_services();
+	service_launcher &launcher = service_launcher::getInstance();
+	if(launcher.get_SecurityStatus() == launch_ConfigSuccess)
+	{
+		launcher.launch_services();
+	}
 	return 0;
-}
-
-startup_config::StartupConfig& sys_startup::s_config()
-{
-	return startup_config::StartupConfig::getInstance();
 }

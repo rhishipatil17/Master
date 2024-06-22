@@ -9,30 +9,60 @@
 using namespace sys_startup;
 using namespace abstracted_api;
 
-service_launcher::service_launcher()
+service_launcher& service_launcher::getInstance()
 {
-    read_SecurityServiceConfig();
-    read_LaunchConfig();
+    static service_launcher launcher;
+    return launcher;
 }
 
-void service_launcher::read_SecurityServiceConfig()
+service_launcher::service_launcher()
+{
+    security_status = read_SecurityServiceConfig();
+    launcher_status = read_LaunchConfig();
+}
+
+sys_SecurityCodes service_launcher::read_SecurityServiceConfig()
 {
     std::ifstream file(SERVICE_SECURITY);
     if(!file)
     {
-        return;
+        return Sec_ConfigFailure;
     }
     file.close();
-    extract_LaunchConfig(SERVICE_SECURITY, service_security);
+
+    clear_Service(service_security);
+    service_security.enabled = ENABLED_TRUE;
     
+    ConfigReader::minIni minFile(SERVICE_SECURITY);
+    std::string value;
+
+    if(!minFile.getKeyValue(SERVICE_NAME, value))
+        return Sec_ConfigFailure;
+    service_security.name = value;
+
+    if(!minFile.getKeyValue(SERVICE_DIRECTORY, value))
+        return Sec_ConfigFailure;
+    service_security.directory = value;
+
+    if(!minFile.getKeyValue(SERVICE_EXEC, value))
+        return Sec_ConfigFailure;
+    service_security.exec = value;
+
+    if(minFile.getKeyValue(SERVICE_ARGS, value))
+    {
+        ConfigReader::minIni::getCSValues(value, service_security.args);
+        service_security.args.push_back(NULL);
+    }
+    return Sec_ConfigSuccess;
 }
 
-void service_launcher::read_LaunchConfig()
+launcher_codes service_launcher::read_LaunchConfig()
 {
     std::ifstream file(SERVICE_LIST);
     if(!file)
     {
-        return;
+        service_list.clear();
+        return launch_ConfigFailure;
     }
 
     std::string tFileName = "temp";
@@ -64,6 +94,7 @@ void service_launcher::read_LaunchConfig()
             clearFile.close();
         }
     }
+    tFile.close();
     if(service_found)                                   //last service in the file will not have subsequent SERVICE_LABEL
     {
         struct service tService;
@@ -73,37 +104,48 @@ void service_launcher::read_LaunchConfig()
             service_list.push_back(tService);
         }
     }
-    tFile.close();
-    return;
+    else
+    {
+        service_list.clear();
+        return launch_NoServices;
+    }
+    remove(tFileName.c_str());
+    return launch_ConfigSuccess;
 }
 
-int service_launcher::extract_LaunchConfig(std::string FileName, struct service &service)
+short int service_launcher::extract_LaunchConfig(std::string FileName, struct service &service)
 {
     ConfigReader::minIni minFile(FileName);
     std::string value;
+    short int result = FAILURE;
 
-    if(!minFile.getKeyValue(SERVICE_NAME, value))
-        return -1;
-    service.name = value;
-
-    if(!minFile.getKeyValue(SERVICE_ENABLED, value))
-        return -1;
-    service.enabled = value;
-
-    if(!minFile.getKeyValue(SERVICE_DIRECTORY, value))
-        return -1;
-    service.directory = value;
-
-    if(!minFile.getKeyValue(SERVICE_EXEC, value))
-        return -1;
-    service.exec = value;
-
-    if(minFile.getKeyValue(SERVICE_ARGS, value))
+    do
     {
-        ConfigReader::minIni::getCSValues(value, service.args);
-        service.args.push_back(NULL);
+        if(!minFile.getKeyValue(SERVICE_NAME, value))
+            break;
+        service.name = value;
+
+        if(!minFile.getKeyValue(SERVICE_ENABLED, value))
+            break;
+        service.enabled = value;
+
+        if(!minFile.getKeyValue(SERVICE_DIRECTORY, value))
+            break;
+        service.directory = value;
+
+        if(!minFile.getKeyValue(SERVICE_EXEC, value))
+            break;
+        service.exec = value;
+
+        result = SUCCESS;
+        if(minFile.getKeyValue(SERVICE_ARGS, value))
+        {
+            ConfigReader::minIni::getCSValues(value, service.args);
+            service.args.push_back(NULL);
+        }
     }
-    return 0;
+    while(0);
+    return result;
 }
 
 void service_launcher::clear_Service(struct service &service)
@@ -116,16 +158,24 @@ void service_launcher::clear_Service(struct service &service)
     service.running=false;
 }
 
-void service_launcher::launch_services()
+launcher_codes service_launcher::launch_services()
 {
+    if(launcher_status != launch_ConfigSuccess)
+    {
+        return launch_Failure;
+    }
     for(std::vector<service>::iterator it = service_list.begin(); it != service_list.end(); it++)
     {
-        int ret = exec_service(*it);
-        if(ret == -1)
-        {
-            it->enabled = false;
-        }
+        it->running = false;
     }
+    
+    for(std::vector<service>::iterator it = service_list.begin(); it != service_list.end(); it++)
+    {
+        long int ret = exec_service(*it);
+    }
+
+    launcher_status = launch_RunningServices;
+    return launch_Success;
 }
 
 long int service_launcher::exec_service(struct service &s_service)
@@ -147,6 +197,6 @@ long int service_launcher::exec_service(struct service &s_service)
     }
     else
     {
-        return -1;
+        return FAILURE;
     }
 }
