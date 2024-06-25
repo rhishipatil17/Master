@@ -1,11 +1,15 @@
 #ifndef SECURITY_CODES
 #define SECURITY_CODES
 
-enum sys_SecurityCodes
+namespace sys_startup
 {
-    Sec_Failure,
-    Sec_ConfigSuccess,
-    Sec_ConfigFailure
-};
-
+    enum sys_SecurityCodes
+    {
+        Sec_Success,
+        Sec_Failure,
+        Sec_ConfigSuccess,
+        Sec_ConfigFailure,
+        Sec_Running
+    };
+}
 #endif

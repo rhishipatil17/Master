@@ -17,6 +17,14 @@ service_launcher& service_launcher::getInstance()
 
 service_launcher::service_launcher()
 {
+    clear_Service(service_security);
+    for(std::vector<service>::iterator it = service_list.begin(); it != service_list.end(); it++)
+    {
+        clear_Service(*it);
+    }
+    total_process_count = 0;
+    running_process_count = 0;
+
     security_status = read_SecurityServiceConfig();
     launcher_status = read_LaunchConfig();
 }
@@ -31,28 +39,12 @@ sys_SecurityCodes service_launcher::read_SecurityServiceConfig()
     file.close();
 
     clear_Service(service_security);
+    if(extract_LaunchConfig(SERVICE_SECURITY, service_security))
+    {
+        return Sec_ConfigFailure;
+    }
     service_security.enabled = ENABLED_TRUE;
     
-    ConfigReader::minIni minFile(SERVICE_SECURITY);
-    std::string value;
-
-    if(!minFile.getKeyValue(SERVICE_NAME, value))
-        return Sec_ConfigFailure;
-    service_security.name = value;
-
-    if(!minFile.getKeyValue(SERVICE_DIRECTORY, value))
-        return Sec_ConfigFailure;
-    service_security.directory = value;
-
-    if(!minFile.getKeyValue(SERVICE_EXEC, value))
-        return Sec_ConfigFailure;
-    service_security.exec = value;
-
-    if(minFile.getKeyValue(SERVICE_ARGS, value))
-    {
-        ConfigReader::minIni::getCSValues(value, service_security.args);
-        service_security.args.push_back(NULL);
-    }
     return Sec_ConfigSuccess;
 }
 
@@ -88,6 +80,7 @@ launcher_codes service_launcher::read_LaunchConfig()
                 if(!extract_LaunchConfig(tFileName, tService))
                 {
                     service_list.push_back(tService);
+                    total_process_count += 1;
                 }
             }
             std::ofstream clearFile(tFileName.c_str(), std::ios::trunc);
@@ -102,6 +95,7 @@ launcher_codes service_launcher::read_LaunchConfig()
         if(!extract_LaunchConfig(tFileName, tService))
         {
             service_list.push_back(tService);
+            total_process_count += 1;
         }
     }
     else
@@ -140,11 +134,14 @@ short int service_launcher::extract_LaunchConfig(std::string FileName, struct se
         result = SUCCESS;
         if(minFile.getKeyValue(SERVICE_ARGS, value))
         {
-            ConfigReader::minIni::getCSValues(value, service.args);
-            service.args.push_back(NULL);
+            getCSValues(value, service.args);
         }
     }
     while(0);
+    if(result == FAILURE)
+    {
+        clear_Service(service);
+    }
     return result;
 }
 
@@ -156,6 +153,7 @@ void service_launcher::clear_Service(struct service &service)
     service.exec.clear();
     service.args.clear();
     service.running=false;
+    service.pid=0;
 }
 
 launcher_codes service_launcher::launch_services()
@@ -167,15 +165,57 @@ launcher_codes service_launcher::launch_services()
     for(std::vector<service>::iterator it = service_list.begin(); it != service_list.end(); it++)
     {
         it->running = false;
+        it->pid = 0;
     }
     
     for(std::vector<service>::iterator it = service_list.begin(); it != service_list.end(); it++)
     {
-        long int ret = exec_service(*it);
+        const long int ret = exec_service(*it);
+        if(ret != FAILURE)
+        {
+            if(launcher_status == launch_ConfigSuccess)
+            {
+                launcher_status = launch_RunningServices;
+            }
+            it->running = true;
+            it->pid = ret;
+            running_process_count += 1;
+        }
+        else
+        {
+            //TODO_msg: print error message
+        }
     }
-
-    launcher_status = launch_RunningServices;
+    if(launcher_status == launch_ConfigSuccess)
+    {
+        launcher_status = launch_NoServices;
+    }
     return launch_Success;
+}
+
+sys_SecurityCodes service_launcher::launch_security()
+{
+    if(security_status != Sec_ConfigSuccess)
+    {
+        return Sec_Failure;
+    }
+    service_security.running = false;
+    service_security.pid = 0;
+    
+    const long int ret = exec_service(service_security);
+    if(ret != FAILURE)
+    {
+        security_status = Sec_Running;
+        service_security.running = true;
+        service_security.pid = ret;
+    }
+    else
+    {
+        //TODO_msg: print error message
+        security_status = Sec_Failure;
+        return Sec_Failure;
+    }
+    return Sec_Success;
 }
 
 long int service_launcher::exec_service(struct service &s_service)
@@ -188,15 +228,27 @@ long int service_launcher::exec_service(struct service &s_service)
 
         if(ret != 0)
         {
-
+            //TODO_work: if execv fails the parent should know
+            return ret;
+        }
+        if(ret == -1)
+        {
+            return FAILURE;
         }
         else
         {
-
+            set_working_dir( get_home_dir() + s_service.directory );
+            //TODO_work: argv list to execv function
+            const int ret = execv(s_service.exec.c_str(), s_service.args.data());
+            if(ret == -1)
+            {
+                exit(EXIT_FAILURE);
+            }
         }
     }
     else
     {
+        //TODO_msg: print if not enabled
         return FAILURE;
     }
 }

@@ -21,6 +21,8 @@
 #define ENABLED_TRUE            "true"
 #define ENABLED_FALSE           "false"
 
+#define DIR_SEPERATOR           "/"
+
 namespace sys_startup
 {
     namespace
@@ -31,19 +33,20 @@ namespace sys_startup
             std::string enabled;
             std::string directory;
             std::string exec;
-            std::vector<std::string> args;
+            std::vector<char[20]> args;
             bool running;
+            long int pid;
         };
     }
 
     enum launcher_codes
     {
+        launch_Success,
+        launch_Failure,
         launch_ConfigSuccess,
         launch_ConfigFailure,
         launch_NoServices,
-        launch_RunningServices,
-        launch_Success,
-        launch_Failure
+        launch_RunningServices
     };
 
     enum return_codes
@@ -58,6 +61,7 @@ namespace sys_startup
             static service_launcher& getInstance();
             sys_SecurityCodes get_SecurityStatus() { return security_status; }
             launcher_codes get_LauncherStatus() { return launcher_status; }
+            sys_SecurityCodes launch_security();
             launcher_codes launch_services();
 
         private:
@@ -67,6 +71,8 @@ namespace sys_startup
             struct service service_security;
             sys_SecurityCodes security_status;
             launcher_codes launcher_status;
+            unsigned short int total_process_count;
+            unsigned short int running_process_count;
 
             sys_SecurityCodes read_SecurityServiceConfig();
             launcher_codes read_LaunchConfig();

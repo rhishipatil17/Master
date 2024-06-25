@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <string.h>
 
 #define COMMA ','
 
@@ -28,8 +29,6 @@ namespace ConfigReader
 
             bool isPresent(void);
             bool getKeyValue(const std::string key, std::string &value);
-
-            static void getCSValues(const std::string data, std::vector<std::string> &values);
 
         private:
             std::string m_file;

@@ -17,7 +17,20 @@ int main(int argc, char **argv)
 	cout << "Hello from startup app PID [%d]\n"<< getpid() << endl;
 
 	service_launcher &launcher = service_launcher::getInstance();
-	if(launcher.get_SecurityStatus() == launch_ConfigSuccess)
+	if(launcher.get_SecurityStatus() == Sec_ConfigSuccess)
+	{
+		sys_SecurityCodes ret = launcher.launch_security();
+	}
+	else
+	{
+		return 0;
+	}
+
+
+
+
+
+	if(launcher.get_LauncherStatus() == launch_ConfigSuccess)
 	{
 		launcher.launch_services();
 	}
