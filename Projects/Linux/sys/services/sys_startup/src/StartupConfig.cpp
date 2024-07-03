@@ -1,7 +1,7 @@
 #include "StartupConfig.h"
 #include <fstream>
 
-using namespace startup_config;
+using namespace sys_startup;
 
 StartupConfig::StartupConfig()
 {

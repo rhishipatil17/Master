@@ -5,7 +5,7 @@
 
 namespace sys_startup
 {
-    startup_config::StartupConfig& s_config();
+    StartupConfig& s_config();
 }
 
 #endif

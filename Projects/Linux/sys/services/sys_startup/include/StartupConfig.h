@@ -5,12 +5,13 @@
 #include <string>
 
 
-namespace startup_config
+namespace sys_startup
 {
     class StartupConfig
     {
         public:
             static StartupConfig& getInstance(void);
+            void readConfig();
 
         private:
             StartupConfig();
