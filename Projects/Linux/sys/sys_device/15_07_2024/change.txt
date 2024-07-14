@@ -1,0 +1,25 @@
+Device
+  
+  Users:
+    - root: root@17996
+    - rhishi: rapatil17996 (sudo)
+    - dev: dev@17996  (sudo)
+    - sys1: sys1@17996
+    - usr1: nopasswd
+
+* chmod o-x /sbin/reboot
+* chmod o-x /sbin/shutdown
+* chmod o-x /bin/systemctl
+* chmod o-x /bin/mount
+* chmod o-x /bin/umount
+
+
+* usermod -aG sys1 dev
+* usermod -aG sys1 rhishi
+
+* chmod -R 770 /system
+* chown sys1 /system
+* chgrp sys1 /system
+
+* mkdir -p /system/sys_startup/flash
+* mkdir -p /system/sys_security/flash
