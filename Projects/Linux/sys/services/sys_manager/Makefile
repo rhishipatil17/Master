@@ -9,8 +9,8 @@ DEPINCDIR= $(FOUNDATIONLIB)/include
 DEPOBJDIR= $(foreach D,$(DEPDIR),$(D)/build)
 DEPOBJECTS= $(foreach D,$(DEPOBJDIR),$(D)/*.o)
 
-TARGET= $(BUILDDIR)/startup.o
-FINALTARGET= $(BUILDDIR)/startup.out
+TARGET= $(BUILDDIR)/manager.o
+FINALTARGET= $(BUILDDIR)/manager.out
 
 CC= g++
 LINK= ld
@@ -19,7 +19,7 @@ OPT= -O0
 CCFLAGS=-Wall -Wextra -std=c++20 -pthread -g -fPIC  $(OPT) $(DEPFLAGS) $(foreach D,$(INCDIR),-I$(D)) $(foreach D,$(DEPINCDIR),-I$(D))
 LFLAGS= -r
 
-BUILDSUBDIR= $(foreach D,$(CODEDIRS),$(BUILDDIR)/$(D))
+BUILDSUBDIR=$(foreach D,$(CODEDIRS),$(BUILDDIR)/$(D))
 CPPFILES=$(foreach D,$(CODEDIRS),$(wildcard $(D)/*.cpp))
 OBJECTS=$(patsubst %.cpp,$(BUILDDIR)/%.o,$(CPPFILES))
 DEPFILES=$(patsubst %.cpp,$(BUILDDIR)/%.d,$(CPPFILES))

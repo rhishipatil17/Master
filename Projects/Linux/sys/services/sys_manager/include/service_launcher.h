@@ -5,7 +5,7 @@
 
 #include "services.h"
 
-namespace sys_startup
+namespace sys_manager
 {
     enum return_codes
     {

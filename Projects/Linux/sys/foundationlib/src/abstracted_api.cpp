@@ -12,12 +12,7 @@ namespace abstracted_api
 		return std::getenv("HOME");
 	}
 
-	std::string getStartupFlashRoot()
-	{
-		return std::string(get_home_dir() + "/sys_startup/flash");
-	}
-
-	std::string getSysShareRoot()
+	std::string getShareRoot()
 	{
 		return std::string(get_home_dir() + "/sys_share");
 	}
@@ -27,7 +22,7 @@ namespace abstracted_api
 		return chdir(directory.c_str());
 	}
 
-	bool getFilesList(std::vector<std::string> files, std::string mask, std::string path)
+	bool getFilesList(std::vector<std::string> &files, std::string mask, std::string path)
 	{
 		bool ret = 0;
 		DIR *directory;
@@ -103,7 +98,7 @@ namespace abstracted_api
 	void getCSValues(const std::string data, std::vector<std::string> &values)
 	{
 		std::string temp_str;
-		for(std::string::iterator it=data.begin(); it!=data.end(); it++)
+		for(std::string::const_iterator it=data.begin(); it!=data.end(); it++)
 		{
 			if(*it != COMMA)
 			{
@@ -121,37 +116,6 @@ namespace abstracted_api
 		if(!temp_str.empty())
 		{
 			values.push_back(temp_str);
-			temp_str.clear();
-		}
-		//TODO_work: put nullptr at the end of the values vector
-	}
-
-	void getCSValues(const std::string data, std::vector<char[20]> &values)
-	{
-		std::string temp_str;
-		std::string::iterator it_data=data.begin();
-
-		while( it_data!=data.end() )
-		{
-			if(*it_data != COMMA)
-			{
-				temp_str.push_back(*it_data);
-			}
-			else
-			{
-				if(!temp_str.empty())
-				{
-					values.resize( values.size()+1 );
-					strcpy(*values.end(), temp_str.c_str());
-					temp_str.clear();
-				}
-			}
-			it_data++;
-		}
-		if(!temp_str.empty())
-		{
-			values.reserve( values.size()+1 );
-			strcpy(*values.end(), temp_str.c_str());
 			temp_str.clear();
 		}
 		//TODO_work: put nullptr at the end of the values vector

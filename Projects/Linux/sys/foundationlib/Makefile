@@ -9,7 +9,7 @@ CC= g++
 LINK= ld
 DEPFLAGS= -MP -MD
 OPT= -O0
-CCFLAGS= -Wall -Wextra -std=c++11 -pthread -g -fPIC $(OPT) $(DEPFLAGS) $(foreach D,$(INCDIRS),-I$(D))
+CCFLAGS= -Wall -Wextra -std=c++20 -pthread -g -fPIC $(OPT) $(DEPFLAGS) $(foreach D,$(INCDIRS),-I$(D))
 LFLAGS= -r
 
 CPPFILES= $(foreach D,$(CODEDIRS),$(wildcard $(D)/*.cpp))
