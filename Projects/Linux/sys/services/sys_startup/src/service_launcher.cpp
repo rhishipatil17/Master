@@ -107,12 +107,12 @@ long int service_launcher::exec_service(struct service &s_service)
     if(ret)
     {
         int status;
-        if( waitpid(ret, &status, WNOHANG) == 0)
+        if( waitpid(ret, &status, WNOHANG) == 0 )
         {
             clear_ArgArr();
             return ret;
         }
-        else if(WIFEXITED(status) && WEXITSTATUS(status))
+        else if( WIFEXITED(status) && WEXITSTATUS(status) )
         {
             clear_ArgArr();
             return FAILURE;

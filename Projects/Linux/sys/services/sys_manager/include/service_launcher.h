@@ -5,7 +5,7 @@
 
 #include "services.h"
 
-namespace sys_manager
+namespace sys_startup
 {
     enum return_codes
     {
@@ -25,7 +25,7 @@ namespace sys_manager
             std::vector<service> service_list;
             unsigned short int running_process_count;
 
-            void clear_Service(struct service &service);
+            inline void clear_Service(struct service &service);
             long int exec_service(struct service &s_service);
     };
 }

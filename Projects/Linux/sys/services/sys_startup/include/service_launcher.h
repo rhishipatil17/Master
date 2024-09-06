@@ -5,8 +5,6 @@
 
 #include "services.h"
 
-#define EMPTY_STR ""
-
 namespace sys_startup
 {
     enum return_codes
