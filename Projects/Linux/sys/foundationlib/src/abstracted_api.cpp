@@ -12,12 +12,12 @@ namespace abstracted_api
 		return std::getenv("HOME");
 	}
 
-	std::string getShareRoot()
+	std::string get_sysroot_dir()
 	{
-		return std::string(get_home_dir() + "/sys_share");
+		return "";
 	}
 
-	int set_working_dir(std::string directory)
+	int set_working_dir(const std::string &directory)
 	{
 		return chdir(directory.c_str());
 	}
@@ -118,6 +118,5 @@ namespace abstracted_api
 			values.push_back(temp_str);
 			temp_str.clear();
 		}
-		//TODO_work: put nullptr at the end of the values vector
 	}
 }

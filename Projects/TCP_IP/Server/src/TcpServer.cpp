@@ -125,7 +125,7 @@ void TcpServer::closeClient()
 {
     close(mClientSocket);
     mClientSocket = 0;
-    //ToDo: add correct server state
+    //TODO: add correct server state
 }
 
 void TcpServer::clearServerAddress()
