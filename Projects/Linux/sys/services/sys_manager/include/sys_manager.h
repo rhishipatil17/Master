@@ -1,6 +1,9 @@
 #ifndef SYS_MANAGER
 #define SYS_MANAGER
 
+#include <vector>
+#include "service_launcher.h"
+
 namespace sys_manager
 {
     class sys_man
@@ -8,8 +11,9 @@ namespace sys_manager
         public:
             sys_man();
 
-        private:
-            service_launcher &launcher;
+        protected:
+            std::vector<service> service_list;
+            unsigned short int running_process_count;
     };
 }
 

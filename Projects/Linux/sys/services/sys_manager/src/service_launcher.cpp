@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-using namespace sys_startup;
+using namespace sys_manager;
 using namespace abstracted_api;
 
 service_launcher& service_launcher::getInstance()
@@ -23,13 +23,6 @@ service_launcher::service_launcher()
     ser.directory = SER1_DIR;
     ser.exec = SER1_EXEC;
     ser.args.push_back(SER1_EXEC);
-    service_list.push_back(ser);
-    clear_Service(ser);
-
-    ser.name = SER2_NAME;
-    ser.directory = SER2_DIR;
-    ser.exec = SER2_EXEC;
-    ser.args.push_back(SER2_EXEC);
     service_list.push_back(ser);
     clear_Service(ser);
 
@@ -109,10 +102,11 @@ long int service_launcher::exec_service(struct service &s_service)
         int status;
         if( waitpid(ret, &status, WNOHANG) == 0 )
         {
+            //TODO_work: again check after some delay if new process was successfully started
             clear_ArgArr();
             return ret;
         }
-        else if( WIFEXITED(status) && WEXITSTATUS(status) )
+        else if( WIFEXITED(status) && (WEXITSTATUS(status) == EXIT_FAILURE) )
         {
             clear_ArgArr();
             return FAILURE;
@@ -130,5 +124,6 @@ long int service_launcher::exec_service(struct service &s_service)
         clear_ArgArr();
         return SUCCESS;
     }
+    clear_ArgArr();
     return FAILURE;
 }

@@ -4,17 +4,13 @@
 #include <vector>
 #include <string>
 
-#define SERVICE_COUNT 2
+#define SERVICE_COUNT 1
 
-#define SER1_NAME   "sys_security"
-#define SER1_DIR    "sys_security/"
-#define SER1_EXEC   "./sys_security"
+#define SER1_NAME   "sys_comms"
+#define SER1_DIR    "sys_comms/"
+#define SER1_EXEC   "./sys_comms"
 
-#define SER2_NAME   "sys_manager"
-#define SER2_DIR    "sys_manager/"
-#define SER2_EXEC   "./sys_manager"
-
-namespace sys_startup
+namespace sys_manager
 {
     struct service
     {

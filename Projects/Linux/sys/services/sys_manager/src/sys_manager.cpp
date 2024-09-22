@@ -1,5 +1,4 @@
 #include "sys_manager.h"
-#include "service_launcher.h"
 
 using namespace std;
 using namespace sys_manager;

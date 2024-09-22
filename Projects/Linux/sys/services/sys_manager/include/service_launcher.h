@@ -1,11 +1,10 @@
 #ifndef SERVICE_LAUNCHER
 #define SERVICE_LAUNCHER
 
-#include <vector>
-
 #include "services.h"
+#include "sys_manager.h"
 
-namespace sys_startup
+namespace sys_manager
 {
     enum return_codes
     {
@@ -13,7 +12,7 @@ namespace sys_startup
         SUCCESS
     };
 
-    class service_launcher
+    class service_launcher: public sys_man
     {
         public:
             static service_launcher& getInstance();
@@ -22,11 +21,9 @@ namespace sys_startup
         private:
             service_launcher();
 
-            std::vector<service> service_list;
-            unsigned short int running_process_count;
-
             inline void clear_Service(struct service &service);
             long int exec_service(struct service &s_service);
+
     };
 }
 
