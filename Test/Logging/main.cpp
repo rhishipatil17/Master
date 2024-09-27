@@ -12,5 +12,7 @@ int main()
     logger.init("Main");
 
     logger.log_msg("Hello World! Hi from 'Main'");
+    this_thread::sleep_for(chrono::seconds(10));
+
     return 0;
 }
