@@ -19,18 +19,18 @@ namespace ipc
 {
 	enum return_codes
 	{
-		Failure = -1;
-		NoInit = -2;
-		Success;
-		
+		Failure = -1,
+		NoInit = -2,
+		Success
 	};
 	class cIPC
 	{
 		public:
-			cIPC(std::string name): proc_name(name) {}
+			cIPC(std::string name);
 			~cIPC();
 			return_codes send(std::string message);
 			return_codes receive(std::string &message, bool noBlock = 0);
+			return_codes close();
 
 		private:
 			bool initialized;
