@@ -1,0 +1,24 @@
+Logging
+  - Timestamp
+  - PID, TID
+  - File name, line number
+  - Move lib to foundation
+
+IPC
+  - mq_unlink: receiver, after one process completes it's execution, send a message to the other process so that when the other one finishes its own execution, it can call unlink to cleanup the queue. Get mq attributes to check if other process is still reading from the queue.
+  - Have a process/thread for entire system cleanup.
+  - Message format while sending a message; possible options: TLV
+  - encryption of IPC messages
+  - priority scheduling
+  - Move lib to foundation
+  - naming and grouping of message queues
+
+GUI
+  - If SPI display used, implement lib for GUI
+  - If HDMI display used, use prebuilt lib
+
+COM
+  - ioctl to manage Wifi
+
+HW
+  - have a separate path for all hardware libs
