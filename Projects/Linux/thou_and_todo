@@ -1,3 +1,7 @@
+Device
+  - create all groups and users with no login and proper permissions
+  - startup process should be started automatically
+
 Processes
   - setid() to detach child from parent
   - restrict commads such as 'kill' even within the group
