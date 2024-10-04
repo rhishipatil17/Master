@@ -14,6 +14,8 @@
 #define SER2_DIR    "sys_manager/"
 #define SER2_EXEC   "./sys_manager"
 
+#define MAX_ARG_SIZE 20
+
 namespace sys_startup
 {
     struct service

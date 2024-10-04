@@ -10,6 +10,8 @@
 #define SER1_DIR    "sys_comms/"
 #define SER1_EXEC   "./sys_comms"
 
+#define MAX_ARG_SIZE 20
+
 namespace sys_manager
 {
     struct service
