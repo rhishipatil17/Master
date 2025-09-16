@@ -31,3 +31,6 @@
 *.out
 *.app
 /.metadata/
+
+# Custom
+Util/id_rsa

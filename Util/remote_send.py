@@ -59,7 +59,7 @@ if sys.argv[1].startswith("-"):
         print("Error: No file name provided")
         sys.exit(1)
 
-#getting all paths
+#getting all file paths (local and remote)
 local_file = sys.argv[file_pos]
 
 if local_file.find("/") != -1:
