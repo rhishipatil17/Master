@@ -1,13 +1,13 @@
-#include "Dbll.h"
+#include "Db_ll.h"
 
-Dbll::Dbll()
+DbLl::DbLl()
 {
-    hptr = std::make_shared<Data>(nullptr);
+    hptr = std::make_shared<DbData>(nullptr);
 }
 
-return_codes Dbll::get_Data(Db_key &Mkey, Db_offset &Moffset)
+return_codes DbLl::get_Data(Db_key &Mkey, Db_offset &Moffset)
 {
-    std::weak_ptr<Data> wp_cur = hptr;
+    std::weak_ptr<DbData> wp_cur = hptr;
 
     do
     {
@@ -36,9 +36,39 @@ return_codes Dbll::get_Data(Db_key &Mkey, Db_offset &Moffset)
     return Failure;
 }
 
-return_codes Dbll::DataInsert(Db_key &Mkey, Db_offset &Moffset)
+return_codes DbLl::get_KeyPresent(Db_key &Mkey)
 {
-    std::weak_ptr<Data> wp_cur = hptr;
+    std::weak_ptr<DbData> wp_cur = hptr;
+
+    do
+    {
+        if(hptr != nullptr)
+        {
+            while(auto sp_cur = wp_cur.lock())
+            {
+                if(sp_cur->key == Mkey)
+                {
+                    return Success;
+                }
+                else
+                {
+                    wp_cur = sp_cur->NextNode;
+                }
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }while(0);
+    
+    return Failure;
+}
+
+return_codes DbLl::data_Insert(Db_key &Mkey, Db_offset &Moffset)
+{
+    std::weak_ptr<DbData> wp_cur = hptr;
 
     if(hptr != nullptr)
     {
@@ -46,7 +76,7 @@ return_codes Dbll::DataInsert(Db_key &Mkey, Db_offset &Moffset)
         {
             if(sp_cur->NextNode == nullptr)
             {
-                sp_cur = std::make_shared<Data>(Mkey, Moffset);
+                sp_cur = std::make_shared<DbData>(Mkey, Moffset);
             }
             else
             {
@@ -56,16 +86,16 @@ return_codes Dbll::DataInsert(Db_key &Mkey, Db_offset &Moffset)
     }
     else
     {
-        hptr = std::make_shared<Data>(Mkey, Moffset);
+        hptr = std::make_shared<DbData>(Mkey, Moffset);
     }
     length+=1;
 
     return Success;
 }
 
-return_codes Dbll::DataRemove(Db_key &Mkey)
+return_codes DbLl::data_Remove(Db_key &Mkey)
 {
-    std::weak_ptr<Data> wp_cur = hptr;
+    std::weak_ptr<DbData> wp_cur = hptr;
 
     do
     {
@@ -73,7 +103,7 @@ return_codes Dbll::DataRemove(Db_key &Mkey)
         {
             if(hptr->key == Mkey)
             {
-                std::shared_ptr<Data> tmp_ptr = hptr;
+                std::shared_ptr<DbData> tmp_ptr = hptr;
                 hptr = hptr->NextNode;
                 tmp_ptr.reset();
                 length-=1;
@@ -88,7 +118,7 @@ return_codes Dbll::DataRemove(Db_key &Mkey)
                 }
                 if(sp_cur->NextNode->key == Mkey)
                 {
-                    std::shared_ptr<Data> tmp_ptr = sp_cur->NextNode;
+                    std::shared_ptr<DbData> tmp_ptr = sp_cur->NextNode;
                     sp_cur->NextNode = sp_cur->NextNode->NextNode;
                     tmp_ptr.reset();
                     length-=1;
