@@ -1,5 +1,5 @@
-#ifndef DATA_H
-#define DATA_H
+#ifndef DB_DATA_H
+#define DB_DATA_H
 
 #include <memory>
 #include "Common.h"

@@ -5,7 +5,7 @@ DbLl::DbLl()
     hptr = std::make_shared<DbData>(nullptr);
 }
 
-return_codes DbLl::get_Data(Db_key &Mkey, Db_offset &Moffset)
+return_codes DbLl::get_Data(const Db_key &Mkey, Db_offset &Moffset)
 {
     std::weak_ptr<DbData> wp_cur = hptr;
 
@@ -36,7 +36,7 @@ return_codes DbLl::get_Data(Db_key &Mkey, Db_offset &Moffset)
     return Failure;
 }
 
-return_codes DbLl::get_KeyPresent(Db_key &Mkey)
+return_codes DbLl::get_KeyPresent(const Db_key &Mkey)
 {
     std::weak_ptr<DbData> wp_cur = hptr;
 
@@ -66,7 +66,7 @@ return_codes DbLl::get_KeyPresent(Db_key &Mkey)
     return Failure;
 }
 
-return_codes DbLl::data_Insert(Db_key &Mkey, Db_offset &Moffset)
+return_codes DbLl::data_Insert(const Db_key &Mkey,const Db_offset &Moffset)
 {
     std::weak_ptr<DbData> wp_cur = hptr;
 
@@ -93,7 +93,7 @@ return_codes DbLl::data_Insert(Db_key &Mkey, Db_offset &Moffset)
     return Success;
 }
 
-return_codes DbLl::data_Remove(Db_key &Mkey)
+return_codes DbLl::data_Remove(const Db_key &Mkey)
 {
     std::weak_ptr<DbData> wp_cur = hptr;
 
