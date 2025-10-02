@@ -1,5 +1,4 @@
-#ifndef DB_DATA_H
-#define DB_DATA_H
+#pragma once
 
 #include <memory>
 #include "Common.h"
@@ -24,4 +23,3 @@ class DbData
         friend class DbLl;                                                                                          //Only the LL class should be able to create a node
 };
 
-#endif

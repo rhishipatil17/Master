@@ -1,6 +1,6 @@
 #include "Db_IdxMan.h"
 
-DbIdxMan& DbIdxMan::getInstance()
+DbMain::DbIdxMan& DbMain::DbIdxMan::getInstance()
 {
     static DbIdxMan instance;
     return instance;

@@ -1,6 +1,6 @@
 #include "Db_DataMan.h"
 
-DbDataMan& DbDataMan::getInstance()
+DbMain::DbDataMan& DbMain::DbDataMan::getInstance()
 {
     static DbDataMan instance;
     return instance;

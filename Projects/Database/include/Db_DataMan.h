@@ -1,17 +1,14 @@
-#ifndef DB_DATAMAN_H
-#define DB_DATAMAN_H
+#pragma once
 
 #include "Common.h"
+#include "Db_main.h"
 
-class DbDataMan
+class DbMain::DbDataMan
 {
     private:
         DbDataMan();
         DbDataMan(const DbDataMan &obj) = delete;
         DbDataMan& operator=(const DbDataMan &obj) = delete;
         static DbDataMan& getInstance();
-
-        friend class DbMain;
 };
 
-#endif

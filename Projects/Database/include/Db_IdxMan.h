@@ -1,10 +1,10 @@
-#ifndef DB_IDXMAN_H
-#define DB_IDXMAN_H
+#pragma once
 
 #include <string>
 #include "Common.h"
+#include "Db_main.h"
 
-class DbIdxMan
+class DbMain::DbIdxMan
 {
     private:
         DbIdxMan();
@@ -12,9 +12,6 @@ class DbIdxMan
         DbIdxMan& operator=(const DbIdxMan &obj) = delete;
         static DbIdxMan& getInstance();
 
-        friend class DbMain;
-
         std::string idx_file;
 };
 
-#endif

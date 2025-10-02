@@ -1,12 +1,12 @@
 #include "Db_HashTable.h"
 
-DbHashTable& DbHashTable::getInstance()
+DbMain::DbHashTable& DbMain::DbHashTable::getInstance()
 {
     static DbHashTable instance;
     return instance;
 }
 
-return_codes calc_Idx(const Db_key &key, Db_idx &Midx)
+return_codes DbMain::DbHashTable::calc_Idx(const Db_key &key, Db_idx &Midx)
 {
     Db_hash dbh = 0;        //Todo: actual hash calculation function
 
@@ -15,19 +15,24 @@ return_codes calc_Idx(const Db_key &key, Db_idx &Midx)
     return Success;
 }
 
-return_codes data_Insert(const Db_key &Mkey, Db_offset &Moffset)
+return_codes DbMain::DbHashTable::data_Insert(const Db_key &Mkey, Db_offset &Moffset)
 {
+    return_codes ret = Failure;
     Db_idx idx;
-    if(calc_Idx(Mkey, idx) != Success)
+
+    do
     {
-        return Failure;
-    }
+        if(calc_Idx(Mkey, idx) != Success)
+        {
+            break;
+        }
+
+        if(idx > DB_HT_SIZE || idx < 0)
+        {
+            break;
+        }
+        
+    }while(0);
     
-    if(idx > DB_HT_SIZE || idx < 0)
-    {
-        return Failure;
-    }
-
-
+    return ret;
 }
-

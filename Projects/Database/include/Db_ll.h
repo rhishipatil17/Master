@@ -1,5 +1,4 @@
-#ifndef DB_LL_H
-#define DB_LL_H
+#pragma once
 
 #include <memory>
 #include "Common.h"
@@ -20,5 +19,3 @@ class DbLl
         std::shared_ptr<DbData> hptr;
         Db_ll_length length;
 };
-
-#endif
