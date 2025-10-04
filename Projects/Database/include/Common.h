@@ -11,7 +11,9 @@ typedef unsigned long long int Db_node_pos;
 
 enum return_codes
 {
-    Success                 = 0,
     Failure                 = -1,
-    KeyAlreadyPresent       = -2
+    LlEmpty                 = -2,
+    KeyAlreadyPresent       = -3,
+    KeyNotPresent           = -4,
+    Success                 = 0
 };

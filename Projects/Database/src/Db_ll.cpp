@@ -3,12 +3,17 @@
 DbLl::DbLl()
 {
     hptr = std::make_shared<DbData>(nullptr);
+    length = 0;
 }
 
 return_codes DbLl::get_Data(const Db_key &Mkey, Db_offset &Moffset)
 {
+    if( this->length == 0 )
+    {
+        return LlEmpty;
+    }
+    
     std::weak_ptr<DbData> wp_cur = hptr;
-
     do
     {
         if(hptr != nullptr)
@@ -33,13 +38,17 @@ return_codes DbLl::get_Data(const Db_key &Mkey, Db_offset &Moffset)
         }
     }while(0);
     
-    return Failure;
+    return KeyNotPresent;
 }
 
-return_codes DbLl::get_KeyPresent(const Db_key &Mkey)
+bool DbLl::get_KeyPresent(const Db_key &Mkey)
 {
-    std::weak_ptr<DbData> wp_cur = hptr;
+    if( this->length == 0 )
+    {
+        return false;
+    }
 
+    std::weak_ptr<DbData> wp_cur = hptr;
     do
     {
         if(hptr != nullptr)
@@ -48,7 +57,7 @@ return_codes DbLl::get_KeyPresent(const Db_key &Mkey)
             {
                 if(sp_cur->key == Mkey)
                 {
-                    return Success;
+                    return true;
                 }
                 else
                 {
@@ -63,20 +72,25 @@ return_codes DbLl::get_KeyPresent(const Db_key &Mkey)
         }
     }while(0);
     
-    return Failure;
+    return true;
 }
 
 return_codes DbLl::data_Insert(const Db_key &Mkey,const Db_offset &Moffset)
 {
-    std::weak_ptr<DbData> wp_cur = hptr;
+    if( get_KeyPresent(Mkey) == true )
+    {
+        return KeyAlreadyPresent;
+    }
 
+    std::weak_ptr<DbData> wp_cur = hptr;
     if(hptr != nullptr)
     {
         while(auto sp_cur = wp_cur.lock())
         {
             if(sp_cur->NextNode == nullptr)
             {
-                sp_cur = std::make_shared<DbData>(Mkey, Moffset);
+                sp_cur->NextNode = std::make_shared<DbData>(Mkey, Moffset);
+                break;
             }
             else
             {
@@ -95,8 +109,12 @@ return_codes DbLl::data_Insert(const Db_key &Mkey,const Db_offset &Moffset)
 
 return_codes DbLl::data_Remove(const Db_key &Mkey)
 {
-    std::weak_ptr<DbData> wp_cur = hptr;
+    if( this->length == 0 )
+    {
+        return LlEmpty;
+    }
 
+    std::weak_ptr<DbData> wp_cur = hptr;
     do
     {
         if(hptr != nullptr)
@@ -106,7 +124,7 @@ return_codes DbLl::data_Remove(const Db_key &Mkey)
                 std::shared_ptr<DbData> tmp_ptr = hptr;
                 hptr = hptr->NextNode;
                 tmp_ptr.reset();
-                length-=1;
+                length -= 1;
                 return Success;
             }
 
@@ -121,7 +139,7 @@ return_codes DbLl::data_Remove(const Db_key &Mkey)
                     std::shared_ptr<DbData> tmp_ptr = sp_cur->NextNode;
                     sp_cur->NextNode = sp_cur->NextNode->NextNode;
                     tmp_ptr.reset();
-                    length-=1;
+                    length -= 1;
                     return Success;
                 }
                 else
@@ -137,5 +155,40 @@ return_codes DbLl::data_Remove(const Db_key &Mkey)
         }
     }while(0);
 
-    return Failure;
+    return KeyNotPresent;
+}
+
+return_codes DbLl::data_Replace(const Db_key &Mkey, const Db_offset &Moffset)
+{
+    if( this->length == 0 )
+    {
+        return LlEmpty;
+    }
+
+    std::weak_ptr<DbData> wp_cur = hptr;
+    do
+    {
+        if(hptr != nullptr)
+        {
+            while(auto sp_cur = wp_cur.lock())
+            {
+                if(sp_cur->key == Mkey)
+                {
+                    sp_cur->offset = Moffset;
+                    return Success;
+                }
+                else
+                {
+                    wp_cur = sp_cur->NextNode;
+                }
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }while(0);
+
+    return KeyNotPresent;
 }
