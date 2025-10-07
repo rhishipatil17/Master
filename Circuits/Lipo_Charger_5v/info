@@ -1,0 +1,293 @@
+{
+  "uuid": "d689b5cad5d828aae6eebc17d17e4eae",
+  "path": "Offline/Lipo_Charger_5v",
+  "name": "Lipo_Charger_5v",
+  "content": "",
+  "created_at": "2025-10-07 20:47:41",
+  "updated_at": "2025-10-07 22:38:26",
+  "stick": "",
+  "documents": [
+    {
+      "uuid": "843ebae1bc004ba028a80e5c6789e409",
+      "title": "Sheet_1",
+      "description": "",
+      "docType": "1",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "f5fb5a24e9edc515352eb800d4f925df": 1,
+        "bb009484ef804a24ac5d18c54b249586": 7,
+        "fd11c9e744c44aeab6011e8bd4c3ea86": 2,
+        "5cbe824183374fac8e4c1ae848199ce3": 1,
+        "cf6eca9c9efe444882712b3d5cec1885": 1,
+        "050210eb44fb24b0f1f7d73e6372031b": 4,
+        "0ad29b9d84e9441d9824a48486cb5fcc": 1,
+        "6445a8f57db8ac3e9df49b5167ee29ec": 1,
+        "5129d2cb7f8e600e7152a0ee6ec60b1c": 1,
+        "24eeb2ceca08480b92b847b6a310acda": 2,
+        "a4eacdcb63554cb08b3b56477817ab57": 1,
+        "f09e085dae7347719ad3c989c0ea4811": 1,
+        "169fb5a2c8404ae99fcb660681a2e6b4": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "10u",
+          1,
+          "C0603",
+          "C1",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "0.1u",
+          1,
+          "C0603",
+          "C2",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "22u",
+          2,
+          "C0603",
+          "C3,C4",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "22uH",
+          1,
+          "L0603",
+          "L1",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "LEDR",
+          1,
+          "LED0603_RED",
+          "LED1",
+          {
+            "Manufacturer Part": "19-217/R6C-AL1M2VY/3T",
+            "Manufacturer": "EVERLIGHT(台湾亿光)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C72044"
+          }
+        ],
+        [
+          "LEDG",
+          1,
+          "LED0603_GREEN",
+          "LED3",
+          {
+            "Manufacturer Part": "19-217/GHC-YR1S2/3T",
+            "Manufacturer": "EVERLIGHT(台湾亿光)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C72043"
+          }
+        ],
+        [
+          "BAT+",
+          1,
+          "HDR-TH_1P-P2.54-V-M",
+          "P1",
+          {
+            "Manufacturer Part": "2.54-1*1P针",
+            "Manufacturer": "BOOMELE(博穆精密)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C81276"
+          }
+        ],
+        [
+          "BAT-",
+          1,
+          "HDR-TH_1P-P2.54-V-M",
+          "P2",
+          {
+            "Manufacturer Part": "2.54-1*1P针",
+            "Manufacturer": "BOOMELE(博穆精密)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C81276"
+          }
+        ],
+        [
+          "5V",
+          1,
+          "HDR-TH_1P-P2.54-V-M",
+          "P3",
+          {
+            "Manufacturer Part": "2.54-1*1P针",
+            "Manufacturer": "BOOMELE(博穆精密)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C81276"
+          }
+        ],
+        [
+          "GND",
+          1,
+          "HDR-TH_1P-P2.54-V-M",
+          "P4",
+          {
+            "Manufacturer Part": "2.54-1*1P针",
+            "Manufacturer": "BOOMELE(博穆精密)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C81276"
+          }
+        ],
+        [
+          "FS8205",
+          1,
+          "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BR",
+          "Q1",
+          {
+            "Manufacturer Part": "FS8205",
+            "Manufacturer": "FORTUNE(富晶)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C32254"
+          }
+        ],
+        [
+          "1k",
+          4,
+          "R0603",
+          "R1,R2,R4,R7",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "100",
+          1,
+          "R0603",
+          "R3",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "2k",
+          1,
+          "R0603",
+          "R5",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "7.5k",
+          1,
+          "R0603",
+          "R6",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "TP4056",
+          1,
+          "ESOP-8_L4.9-W3.9-P1.27-LS6.0-BL-EP",
+          "U1",
+          {
+            "Manufacturer Part": "TP4056-42-ESOP8",
+            "Manufacturer": "TOPPOWER(南京拓微)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C16581"
+          }
+        ],
+        [
+          "FS312F-G",
+          1,
+          "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BR",
+          "U2",
+          {
+            "Manufacturer Part": "FS312F-G",
+            "Manufacturer": "FORTUNE(富晶)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C82736"
+          }
+        ],
+        [
+          "MT3608",
+          1,
+          "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL",
+          "U3",
+          {
+            "Manufacturer Part": "MT3608",
+            "Manufacturer": "西安航天民芯",
+            "Supplier": "LCSC",
+            "Supplier Part": "C84817"
+          }
+        ],
+        [
+          "SS34A_ZXL",
+          1,
+          "DO-214AC_L4.3-W2.7-LS5.2-RD",
+          "U4",
+          {
+            "Manufacturer Part": "SS34A",
+            "Manufacturer": "Zhengxin(正芯)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C19272196"
+          }
+        ],
+        [
+          "TYPE-C-31-M-16",
+          1,
+          "TYPE-C-SMD_TYPE-C-31-M-16",
+          "USB1",
+          {
+            "Manufacturer Part": "TYPE-C-31-M-16",
+            "Manufacturer": "韩国韩荣",
+            "Supplier": "LCSC",
+            "Supplier Part": "C283541"
+          }
+        ]
+      ],
+      "updateTime": 1759856906,
+      "createTime": 1759850262,
+      "histories": [],
+      "created_at": "2025-10-07 20:47:42",
+      "updated_at": "2025-10-07 22:38:26"
+    }
+  ],
+  "sort": [],
+  "title": "Lipo_Charger_5v",
+  "foldername": "Lipo_Charger_5v",
+  "schfilename": "Lipo_Charger_5v.json",
+  "schfilemtime": 1759856906255
+}
