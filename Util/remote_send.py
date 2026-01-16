@@ -1,8 +1,6 @@
 import os
 import sys
 import paramiko
-from scp import SCPClient
-from enum import Enum
 
 #ssh connection details
 remote_host = "10.205.105.69"
