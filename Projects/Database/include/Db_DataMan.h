@@ -11,4 +11,3 @@ class DbMain::DbDataMan
         DbDataMan& operator=(const DbDataMan &obj) = delete;
         static DbDataMan& getInstance();
 };
-
