@@ -7,7 +7,8 @@
 VaultCLI::VaultCLI(const std::string& vaultPath) : manager(vaultPath) {}
 
 // Standard visible input
-std::string VaultCLI::getInput(const std::string& prompt) {
+std::string VaultCLI::getInput(const std::string& prompt)
+{
     std::string input;
     std::cout << prompt;
     std::getline(std::cin, input);
@@ -15,7 +16,8 @@ std::string VaultCLI::getInput(const std::string& prompt) {
 }
 
 // Secure hidden input (The Linux Magic)
-std::string VaultCLI::getHiddenPassword(const std::string& prompt) {
+std::string VaultCLI::getHiddenPassword(const std::string& prompt)
+{
     std::string password;
     std::cout << prompt;
 
@@ -46,7 +48,8 @@ std::string VaultCLI::getHiddenPassword(const std::string& prompt) {
     return password;
 }
 
-void VaultCLI::displayMenu() {
+void VaultCLI::displayMenu()
+{
     std::cout << "\n=== Local Password Vault ===\n";
     std::cout << "1. Unlock Vault\n";
     std::cout << "2. Add New Credential\n";
@@ -56,27 +59,34 @@ void VaultCLI::displayMenu() {
 }
 
 // The main loop of the application
-void VaultCLI::run() {
+void VaultCLI::run()
+{
     bool running = true;
     bool isUnlocked = false;
 
-    while (running) {
+    while (running)
+    {
         displayMenu();
         std::string choice = getInput("Choose an option (1-4): ");
 
-        if (choice == "1") {
+        if (choice == "1")
+        {
             std::string masterPassword = getHiddenPassword("Enter Master Password: ");
             std::cout << "[*] Attempting to unlock vault...\n";
             
             // Call the manager!
             isUnlocked = manager.unlockVault(masterPassword);
             
-            if (isUnlocked) {
+            if (isUnlocked)
+            {
                 std::cout << "[+] Vault unlocked successfully!\n";
             }
 
-        } else if (choice == "2") {
-            if (!isUnlocked) {
+        }
+        else if (choice == "2")
+        {
+            if (!isUnlocked)
+            {
                 std::cout << "[-] Error: Vault is locked. Please unlock first.\n";
                 continue;
             }
@@ -88,8 +98,11 @@ void VaultCLI::run() {
             manager.addCredential(service, user, pass);
             std::cout << "[+] Credential securely added and saved to disk!\n";
 
-        } else if (choice == "3") {
-            if (!isUnlocked) {
+        } 
+        else if (choice == "3")
+        {
+            if (!isUnlocked)
+            {
                 std::cout << "[-] Error: Vault is locked. Please unlock first.\n";
                 continue;
             }
@@ -98,9 +111,12 @@ void VaultCLI::run() {
             // Fetch the credential
             Credential cred = manager.getCredential(service);
             
-            if (cred.serviceName.empty()) {
+            if (cred.serviceName.empty())
+            {
                 std::cout << "[-] No credential found for " << service << ".\n";
-            } else {
+            }
+            else
+            {
                 std::cout << "\n--- Credential Found ---\n";
                 std::cout << "Service:  " << cred.serviceName << "\n";
                 std::cout << "Username: " << cred.username << "\n";
@@ -108,11 +124,15 @@ void VaultCLI::run() {
                 std::cout << "------------------------\n";
             }
 
-        } else if (choice == "4") {
+        }
+        else if (choice == "4")
+        {
             std::cout << "Locking vault and exiting. Goodbye!\n";
             running = false;
 
-        } else {
+        }
+        else
+        {
             std::cout << "[-] Invalid choice. Please try again.\n";
         }
     }

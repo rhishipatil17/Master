@@ -11,16 +11,19 @@ constexpr int TAG_LEN = 16;
 constexpr int KEY_LEN = 32; // 256 bits for AES-256
 constexpr int PBKDF2_ITERATIONS = 210000; // Recommended minimum for SHA-256
 
-void CryptoEngine::deriveKey(const std::string& password, const unsigned char* salt, unsigned char* key) {
+void CryptoEngine::deriveKey(const std::string& password, const unsigned char* salt, unsigned char* key)
+{
     // PBKDF2 takes the password and salt, hashes it 210,000 times, and outputs a 32-byte key
     if (!PKCS5_PBKDF2_HMAC(password.c_str(), password.length(),
                            salt, SALT_LEN, PBKDF2_ITERATIONS,
-                           EVP_sha256(), KEY_LEN, key)) {
+                           EVP_sha256(), KEY_LEN, key)) 
+    {
         throw std::runtime_error("Key derivation failed!");
     }
 }
 
-std::vector<unsigned char> CryptoEngine::encrypt(const std::string& masterPassword, const std::string& plaintext) {
+std::vector<unsigned char> CryptoEngine::encrypt(const std::string& masterPassword, const std::string& plaintext)
+{
     unsigned char salt[SALT_LEN];
     unsigned char iv[IV_LEN];
     unsigned char key[KEY_LEN];
@@ -70,9 +73,11 @@ std::vector<unsigned char> CryptoEngine::encrypt(const std::string& masterPasswo
     return finalPayload;
 }
 
-std::string CryptoEngine::decrypt(const std::string& masterPassword, const std::vector<unsigned char>& payload) {
+std::string CryptoEngine::decrypt(const std::string& masterPassword, const std::vector<unsigned char>& payload)
+{
     // Basic validation to ensure the file isn't too small to even contain our headers
-    if (payload.size() < (SALT_LEN + IV_LEN + TAG_LEN)) {
+    if (payload.size() < (SALT_LEN + IV_LEN + TAG_LEN))
+    {
         throw std::runtime_error("Vault file is corrupted or too small.");
     }
 
@@ -116,10 +121,13 @@ std::string CryptoEngine::decrypt(const std::string& masterPassword, const std::
     
     EVP_CIPHER_CTX_free(ctx);
 
-    if (ret > 0) {
+    if (ret > 0)
+    {
         plaintext_len += len;
         return std::string(plaintext.begin(), plaintext.begin() + plaintext_len);
-    } else {
+    }
+    else
+    {
         throw std::runtime_error("Authentication failed! Wrong master password or corrupted vault.");
     }
 }
