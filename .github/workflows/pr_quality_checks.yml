@@ -1,0 +1,29 @@
+name: "PR Quality Checks"
+on:
+  pull_request:
+    branches: [ main ]
+
+# Tell GitHub to use the newer, supported Node.js 24 engine
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  python-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Set up Python
+        # Upgraded to v5 to resolve the Node 20 deprecation warning
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run Trailing Newline Check
+        run: python scripts/new_line_check_pr.py
+
+      - name: Run Single Commit Check
+        run: python scripts/single_commit_check_pr.py
