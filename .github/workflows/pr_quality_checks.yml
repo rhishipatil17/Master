@@ -8,7 +8,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  python-checks:
+  quality-checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,3 +27,24 @@ jobs:
 
       - name: Run Single Commit Check
         run: python scripts/single_commit_check_pr.py
+  
+  cpp-compile-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install g++
+        # Ensures the compiler is present and up to date
+        run: sudo apt-get update && sudo apt-get install -y g++
+
+      - name: Run C++ Header Check
+        # This script exits instantly if no .hpp files were modified
+        run: python scripts/compile_hpp_check.py
