@@ -1,5 +1,5 @@
-#ifndef ARRAY_H
-#define ARRAY_H
+#ifndef ARRAY_HPP
+#define ARRAY_HPP
 
 #include <cstddef>
 #include <stdexcept>
@@ -40,7 +40,7 @@ namespace rp
     struct array
     {
         // raw array in stack memory
-        T elements[N];
+        T m_elements[N];
 
     // --- Capacity ---
 
@@ -53,40 +53,40 @@ namespace rp
         // no limit checking for size of array before indexing (faster)
         T& operator[](std::size_t index)
         {
-            return elements[index];
+            return m_elements[index];
         }
         const T& operator[](std::size_t index) const
         {
-            return elements[index];
+            return m_elements[index];
         }
 
         // limit is checked for size of array before indexing
         T& at(std::size_t index)
         {
-            if( index > N )
+            if( index >= N )
             {
                 throw std::out_of_range("rp::array index out of bounds");
             }
-            return elements[index];
+            return m_elements[index];
         }
         const T& at(std::size_t index) const
         {
-            if( index > N )
+            if( index >= N )
             {
                 throw std::out_of_range("rp::array index out of bounds");
             }
-            return elements[index];
+            return m_elements[index];
         }
 
-        T& front() { return elements[0]; }
-        const T& front() const { return elemnts[0]; }
+        T& front() { return m_elements[0]; }
+        const T& front() const { return m_elements[0]; }
 
-        T& back() { return elements[N-1]; }
-        const T& back() const { return elements[N-1]; }
+        T& back() { return m_elements[N-1]; }
+        const T& back() const { return m_elements[N-1]; }
 
         // return a pointer to the underlying raw array
-        T* data() { return elements; }
-        cons T* data() const { return elements; }
+        T* data() { return m_elements; }
+        const T* data() const { return m_elements; }
 
     // --- Iterators ---
 
@@ -94,14 +94,14 @@ namespace rp
         using iterator = T*;
         using const_iterator = const T*;
 
-        iterator begin() { return elements; }
-        iterator end() { return elements + N; }
+        iterator begin() { return m_elements; }
+        iterator end() { return m_elements + N; }
 
-        const_iterator begin() const { return elements; }
-        const_iterator end() const { return elements + N; }
+        const_iterator begin() const { return m_elements; }
+        const_iterator end() const { return m_elements + N; }
 
-        const_iterator cbegin() const { return elements; }
-        const_iterator cend() const { return elements + N; }
+        const_iterator cbegin() const { return m_elements; }
+        const_iterator cend() const { return m_elements + N; }
 
     // --- Operations ---
 
@@ -110,7 +110,7 @@ namespace rp
         {
             for(std::size_t i = 0; i < N; i++)
             {
-                elements[i] = value;
+                m_elements[i] = value;
             }
         }
 
@@ -121,7 +121,7 @@ namespace rp
             {
                 // Note 5
                 using std::swap;
-                swap(elements[i], other.elements[i]);
+                swap(m_elements[i], other.m_elements[i]);
             }
         }
 
