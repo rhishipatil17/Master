@@ -16,6 +16,51 @@ namespace rp
         public:
             LRU_Cache() = delete;
             LRU_Cache(std::size_t sz) : max_size(sz) {}
+            LRU_Cache(const LRU_Cache& other) : max_size(other.max_size)
+            {
+                for(const auto& list_item : other.dlist)
+                {
+                    auto list_iter = dlist.emplace(dlist.end(), list_item);
+                    dmap.emplace(list_item.first, list_iter);
+                }
+            }
+            LRU_Cache(LRU_Cache&& other) : max_size(other.max_size) noexcept
+            {
+                dlist = std::move(other.dlist);
+                dmap = std::move(other.dmap);
+                other.max_size = 0;
+            }
+            ~LRU_Cache() = default;
+            LRU_Cache& operator=(const LRU_Cache& other)
+            {
+                dlist.clear();
+                dmap.clear();
+                max_size = other.max_size;
+
+                for(const auto& list_item : other.dlist)
+                {
+                    auto list_iter = emplace(dlist.end(), list_item);
+                    dmap.emplace(list_iter.first, list_iter);
+                }
+
+                return *this;
+            }
+            LRU_Cache& operator=(LRU_Cache&& other)
+            {
+                if(this == &other)
+                {
+                    return *this;
+                }
+
+                dlist.clear();
+                dmap.clear();
+                max_size = other.max_size;
+                dlist = std::move(other.dlist);
+                dmap = std::move(other.dmap);
+                other.max_size = 0;
+
+                return *this;
+            }
 
             void addData(const t_key& key, const t_value& value)
             {
