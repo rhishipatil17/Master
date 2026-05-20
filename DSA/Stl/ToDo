@@ -1,9 +1,0 @@
-array:
-    std::allocator
-    std::initializer_list
-
-vector:
-    comments
-    emplace()
-    emplace_back()
-    swap()
