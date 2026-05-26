@@ -1,0 +1,41 @@
+name: "ChatOps: Recheck"
+
+on:
+  issue_comment:
+    types: [created]
+
+# We need elevated permissions to read the PR and restart actions
+permissions:
+  actions: write
+  pull-requests: read
+
+jobs:
+  re-run-workflows:
+    # 1. Check if the comment is on a Pull Request (not a standard Issue)
+    # 2. Check if the exact text of the comment is 'recheck'
+    if: ${{ github.event.issue.pull_request && github.event.comment.body == 'recheck' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Re-trigger PR Checks
+        env:
+          # This token is automatically provided by GitHub
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=${{ github.event.issue.number }}
+          REPO=${{ github.repository }}
+          
+          echo "Looking for workflow runs on PR #$PR_NUMBER..."
+          
+          # Fetch the IDs of the workflows that ran on this PR
+          RUN_IDS=$(gh run list --pr $PR_NUMBER --repo $REPO --json databaseId --jq '.[].databaseId')
+          
+          if [ -z "$RUN_IDS" ]; then
+            echo "No previous workflow runs found to re-trigger."
+            exit 0
+          fi
+          
+          # Loop through each workflow run and restart it
+          for ID in $RUN_IDS; do
+            echo "Attempting to re-run workflow ID: $ID"
+            gh run rerun $ID || echo "⚠️ Could not restart $ID (it may already be running)."
+          done
