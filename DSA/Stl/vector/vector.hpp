@@ -180,6 +180,10 @@ namespace rp
 
             void clear()
             {
+                for(std::size_t i = 0; i < m_size; i++)
+                {
+                    m_data[i].~T();
+                }
                 m_size = 0;
             }
             void push_back(const T& value)
@@ -200,6 +204,7 @@ namespace rp
             {
                 if(m_size)
                 {
+                    m_data[m_size-1].~T();
                     m_size--;
                 }
             }
