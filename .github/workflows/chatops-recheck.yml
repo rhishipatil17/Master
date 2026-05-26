@@ -11,7 +11,7 @@ permissions:
 jobs:
   re-run-workflows:
     # Catch "recheck" regardless of capitalization
-    if: ${{ github.event.issue.pull_request && contains(tolower(github.event.comment.body), 'recheck') }}
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'recheck') }}
     runs-on: ubuntu-latest
     steps:
       - name: Re-trigger PR Checks
