@@ -1,0 +1,40 @@
+DSA/CMakeLists.txt contains list of library subdirectories and testing is enabled
+
+To test a library, create the following and also add the test subdirectory to master CMakeLists
+
+#Test App
+
+    DSA/test/main.cpp
+    DSA/test/CMakeLists.txt
+
+#CmakeLists.txt
+
+    cmake_minimum_required(VERSION 3.14)
+    project(TestApp)
+
+    add_executable(test_app main.cpp)
+    target_link_libraries(test_app 
+        PRIVATE
+        my_library  #DSA library name
+    )
+
+    set_target_properties(test_app PROPERTIES 
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/out"
+    )
+
+#main.cpp
+    #include "my_library.hpp"
+
+
+#To Compile,
+    cd DSA
+    mkdir build
+    cd build
+    cmake ..
+    make
+
+#To run unit test after running make
+    ctest [options]
+
+#To not build unit tests,
+    cmake -DBUILD_TESTS=OFF (set BUILD_TEST flag to OFF)
